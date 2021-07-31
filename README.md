@@ -1,2 +1,2 @@
-# Dimer
- Dimer
+# [WIP] Dimer
+ ディスコード用タイマー
