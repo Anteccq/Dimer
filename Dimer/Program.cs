@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using ConsoleAppFramework;
+using Discord.Commands;
+using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Dimer
 {
@@ -14,6 +17,13 @@ namespace Dimer
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.Configure<Config>(hostContext.Configuration);
+                    services.AddSingleton<DiscordSocketClient>();
+                    services.AddSingleton<CommandService>();
+                })
+                .ConfigureLogging(logging =>
+                {
+                    logging.ReplaceToSimpleConsole();
+                    logging.SetMinimumLevel(LogLevel.Information);
                 })
                 .RunConsoleAppFrameworkAsync<Dimer>(args);
         }
