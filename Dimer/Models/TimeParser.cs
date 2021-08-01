@@ -24,8 +24,8 @@ namespace Dimer.Models
         private static bool TryMultipleTimeParse(string timeString, out TimeSpan time)
         {
             time = TimeSpan.Zero;
-            var seek = 0;
-            var index = 0;
+            var seek = timeString.Length - 1;
+            var index = timeString.Length - 1;
             var count = 0;
             var numbers = new int[MaxArrayLength];
             try
@@ -44,10 +44,10 @@ namespace Dimer.Models
                     index--;
                 }
 
-                if (int.TryParse(
+                if (!int.TryParse(
                     timeString.AsSpan().Slice(index+1, seek-index),
                     out numbers[MaxArrayLength-count-1])) return false;
-                time = new TimeSpan(numbers[3], numbers[2], numbers[1], numbers[0]);
+                time = new TimeSpan(numbers[0], numbers[1], numbers[2], numbers[3]);
                 return true;
             }
             catch
