@@ -32,6 +32,11 @@ namespace Dimer
 
         public async Task ExecuteAsync()
         {
+            if (string.IsNullOrEmpty(_config.Value.DiscordToken))
+            {
+                _logger.LogCritical("Invalid Discord Token.");
+                return;
+            }
             _client.Log += m =>
             {
                 _logger.Log(m.Severity.ToLogLevel(), m.Exception, m.Message);
