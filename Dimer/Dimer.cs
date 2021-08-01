@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using ConsoleAppFramework;
+using Dimer.Extensions;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
@@ -33,7 +34,7 @@ namespace Dimer
         {
             _client.Log += m =>
             {
-                _logger.Log(ToLogLevel(m.Severity), m.Exception, m.Message);
+                _logger.Log(m.Severity.ToLogLevel(), m.Exception, m.Message);
                 return Task.CompletedTask;
             };
             _client.MessageReceived += MessageHandle;
@@ -54,17 +55,5 @@ namespace Dimer
             var context = new CommandContext(_client, msg);
             await _command.ExecuteAsync(context, argPos, null);
         }
-
-        private LogLevel ToLogLevel(LogSeverity severity)
-           => severity switch
-            {
-                LogSeverity.Critical => LogLevel.Critical,
-                LogSeverity.Warning => LogLevel.Warning,
-                LogSeverity.Error => LogLevel.Error,
-                LogSeverity.Debug => LogLevel.Debug,
-                LogSeverity.Info => LogLevel.Information,
-                LogSeverity.Verbose => LogLevel.Trace,
-                _ => LogLevel.None
-            };
     }
 }
