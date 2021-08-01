@@ -3,7 +3,7 @@
     "Dimer": {
       "commandName": "Project",
       "environmentVariables": {
-        "DOTNET_ENVIRONMENT": "Develop"
+        "DOTNET_ENVIRONMENT": "Development"
       }
     }
   }

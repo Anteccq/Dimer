@@ -16,7 +16,7 @@ namespace Dimer
             await Host.CreateDefaultBuilder()
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.Configure<Config>(hostContext.Configuration);
+                    services.Configure<Config>(hostContext.Configuration.GetSection("Config"));
                     services.AddSingleton<DiscordSocketClient>();
                     services.AddSingleton<CommandService>();
                 })
