@@ -21,7 +21,7 @@ namespace Dimer
         private readonly ILogger _logger;
         private const char CommandPrefix = '!';
 
-        public Dimer(IOptions<Config> config, DiscordSocketClient client, CommandService command, ILogger logger)
+        public Dimer(IOptions<Config> config, DiscordSocketClient client, CommandService command, ILogger<Dimer> logger)
         {
             _config = config;
             _client = client;
