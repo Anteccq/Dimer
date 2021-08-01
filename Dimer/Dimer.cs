@@ -58,7 +58,9 @@ namespace Dimer
             var argPos = 0;
             if(!(msg.HasCharPrefix(CommandPrefix, ref argPos) || msg.HasMentionPrefix(_client.CurrentUser, ref argPos))) return;
             var context = new CommandContext(_client, msg);
-            await _command.ExecuteAsync(context, argPos, null);
+            var result = await _command.ExecuteAsync(context, argPos, null);
+            if (!result.IsSuccess && result is ExecuteResult executeResult)
+                _logger.LogError(executeResult.Exception, executeResult.Exception.Message);
         }
     }
 }
