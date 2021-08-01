@@ -33,11 +33,11 @@ namespace Dimer.Models
                 while ((index = timeString.LastIndexOf(':', index)) != -1)
                 {
                     count++;
-                    if (count > MaxArrayLength - 1) return false;
+                    if (count > MaxArrayLength-1) return false;
 
                     if (!int.TryParse(
-                        timeString.AsSpan().Slice(index + 1, seek - index),
-                        out numbers[MaxArrayLength - count]))
+                        timeString.AsSpan().Slice(index+1, seek-index),
+                        out numbers[MaxArrayLength-count]))
                         return false;
 
                     seek = index - 1;
@@ -45,8 +45,8 @@ namespace Dimer.Models
                 }
 
                 if (int.TryParse(
-                    timeString.AsSpan().Slice(index + 1, seek - index),
-                    out numbers[MaxArrayLength - count - 1])) return false;
+                    timeString.AsSpan().Slice(index+1, seek-index),
+                    out numbers[MaxArrayLength-count-1])) return false;
                 time = new TimeSpan(numbers[3], numbers[2], numbers[1], numbers[0]);
                 return true;
             }
