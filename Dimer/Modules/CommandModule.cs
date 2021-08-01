@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dimer.Models;
+using Discord;
 using Discord.Commands;
 
 namespace Dimer.Modules
@@ -26,8 +27,6 @@ namespace Dimer.Modules
                 return;
             }
 
-            await ReplyAsync(time.ToString());
-
             var message = "";
             if(args.Length > 1)
                 message = args.Skip(1).Aggregate((a, b) => $"{a} {b}");
@@ -36,6 +35,7 @@ namespace Dimer.Modules
             {
                 Message = message
             };
+            await Context.Message.AddReactionAsync(new Emoji("⏲️"));
             timer.Start(async x => await ReplyAsync($"{Context.User.Mention} {x}"));
         }
     }
