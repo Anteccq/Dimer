@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Dimer": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Develop"
+      }
+    }
+  }
+}
