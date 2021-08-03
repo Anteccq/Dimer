@@ -19,14 +19,16 @@ namespace Dimer
         private readonly IOptions<Config> _config;
         private readonly DiscordSocketClient _client;
         private readonly CommandService _command;
+        private readonly IServiceProvider _serviceProvider;
         private readonly ILogger _logger;
         private const char CommandPrefix = '!';
 
-        public Dimer(IOptions<Config> config, DiscordSocketClient client, CommandService command, ILogger<Dimer> logger)
+        public Dimer(IOptions<Config> config, DiscordSocketClient client, CommandService command, IServiceProvider serviceProvider, ILogger<Dimer> logger)
         {
             _config = config;
             _client = client;
             _command = command;
+            _serviceProvider = serviceProvider;
             _logger = logger;
         }
 
@@ -43,7 +45,7 @@ namespace Dimer
                 return Task.CompletedTask;
             };
             _client.MessageReceived += MessageHandle;
-            await _command.AddModulesAsync(Assembly.GetEntryAssembly(), null);
+            await _command.AddModulesAsync(Assembly.GetEntryAssembly(), _serviceProvider);
             await _client.LoginAsync(TokenType.Bot, _config.Value.DiscordToken);
             await _client.StartAsync();
 
@@ -58,7 +60,9 @@ namespace Dimer
             var argPos = 0;
             if(!(msg.HasCharPrefix(CommandPrefix, ref argPos) || msg.HasMentionPrefix(_client.CurrentUser, ref argPos))) return;
             var context = new CommandContext(_client, msg);
-            await _command.ExecuteAsync(context, argPos, null);
+            var result = await _command.ExecuteAsync(context, argPos, _serviceProvider);
+            if (!result.IsSuccess && result is ExecuteResult executeResult)
+                _logger.LogError(executeResult.Exception, executeResult.Exception.Message);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using ConsoleAppFramework;
+using Dimer.Models;
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +20,7 @@ namespace Dimer
                     services.Configure<Config>(hostContext.Configuration.GetSection("Config"));
                     services.AddSingleton<DiscordSocketClient>();
                     services.AddSingleton<CommandService>();
+                    services.AddSingleton<ITimeManager, TimerManager>();
                 })
                 .ConfigureLogging(logging =>
                 {
