@@ -1,0 +1,22 @@
+name: DotNet Build
+
+on:
+  push:
+    branches:
+      - release
+      - main
+    tags:
+      - "!*"
+  pull_request:
+    branches:
+      - main
+jobs:
+  build-dotnet:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: dotnet build ./Dimer/ -c Dubug
+      - name: Test
+        run: dotnet test ./Dimer.Tests/ -c Debug
