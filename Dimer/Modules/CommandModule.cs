@@ -6,14 +6,25 @@ using System.Threading.Tasks;
 using Dimer.Models;
 using Discord;
 using Discord.Commands;
+using Microsoft.Extensions.Logging;
 
 namespace Dimer.Modules
 {
     public class CommandModule : ModuleBase
     {
         private const string TimerInvalidMessage = ":x: `!timer 180 [message]`";
-        [Command("timer")]
-        public async Task Timer(params string[] args)
+
+        private readonly ITimeManager _timerManager;
+        private readonly ILogger _logger;
+
+        public CommandModule(ITimeManager timerManager, ILogger<CommandModule> logger)
+        {
+            _timerManager = timerManager;
+            _logger = logger;
+        }
+
+        [Command("dimer")]
+        public async Task Dimer(params string[] args)
         {
             if (args is null || args.Length < 1)
             {
@@ -35,8 +46,16 @@ namespace Dimer.Modules
             {
                 Message = message
             };
-            await Context.Message.AddReactionAsync(new Emoji("⏲️"));
-            timer.Start(async x => await ReplyAsync($"{Context.User.Mention} {x}"));
+            var timerId = _timerManager.Add(timer);
+            var now = DateTime.UtcNow;
+            _logger.LogDebug($"Receipt: {now} {now.Millisecond}");
+            await ReplyAsync($"{new Emoji("⏲️")} {timerId}");
+            timer.Start(async x =>
+            {
+                var eventTime = DateTime.UtcNow;
+                _logger.LogDebug($"Send: {eventTime} {eventTime.Millisecond}");
+                await ReplyAsync($"{Context.User.Mention} {x}");
+            });
         }
     }
 }

@@ -7,7 +7,12 @@ using System.Threading.Tasks;
 
 namespace Dimer.Models
 {
-    public class TimerManager
+    public interface ITimeManager
+    {
+        int Add(MessageTimer timer);
+        MessageTimer Find(int key);
+    }
+    public class TimerManager : ITimeManager
     {
         private ConcurrentDictionary<int, MessageTimer> Timers { get; } = new();
 
