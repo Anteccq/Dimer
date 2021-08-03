@@ -63,7 +63,11 @@ namespace Dimer.Modules
         [Command("dimer-r")]
         public async Task RemoveTimer([Summary("TimerId (number)")]int id)
         {
-            if (!_timerManager.Exists(id)) await ReplyAsync(TimerNotFoundMessage);
+            if (!_timerManager.Exists(id))
+            {
+                await ReplyAsync(TimerNotFoundMessage);
+                return;
+            }
             var timer = _timerManager.Find(id);
             timer?.Cancel();
             _timerManager.TryRemove(id);
