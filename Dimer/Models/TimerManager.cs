@@ -11,6 +11,9 @@ namespace Dimer.Models
     {
         int Add(MessageTimer timer);
         MessageTimer Find(int key);
+        bool Exists(int key);
+        bool TryRemoveIfExists(int key);
+        bool TryRemove(int key);
     }
     public class TimerManager : ITimeManager
     {
@@ -21,7 +24,6 @@ namespace Dimer.Models
             if (timer is null) throw new ArgumentException($"timer can not be null.");
             var id = Timers.Count;
             Timers.TryAdd(id, timer);
-            timer.Finished += () => Timers.TryRemove(id, out _);
             return id;
         }
 
@@ -30,5 +32,16 @@ namespace Dimer.Models
             Timers.TryGetValue(key, out var timer);
             return timer;
         }
+
+        public bool Exists(int key)
+            => Timers.ContainsKey(key);
+
+        public bool TryRemoveIfExists(int key)
+        {
+            return Exists(key) && Timers.TryRemove(key, out _);
+        }
+
+        public bool TryRemove(int key)
+            => Timers.TryRemove(key, out _);
     }
 }
