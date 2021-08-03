@@ -1,2 +1,4 @@
+[![DotNet Build](https://github.com/AntiquePendulum/Dimer/actions/workflows/debug-build.yml/badge.svg)](https://github.com/AntiquePendulum/Dimer/actions/workflows/debug-build.yml)
+
 # [WIP] Dimer
- ディスコード用タイマー
+繝�繧｣繧ｹ繧ｳ繝ｼ繝臥畑繧ｿ繧､繝槭�ｼ
