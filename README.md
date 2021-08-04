@@ -47,6 +47,7 @@ Notice: You Can't Change [time]
 !help
 !dimer-h
 ```
+![Help](https://user-images.githubusercontent.com/39259186/128179850-8e3fee03-c13c-47da-8c5c-0d7ef0d49a49.png)
 
 ## Development
 ### Requirments
