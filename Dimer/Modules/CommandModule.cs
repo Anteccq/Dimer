@@ -13,6 +13,7 @@ namespace Dimer.Modules
     public class CommandModule : ModuleBase
     {
         private const string TimerInvalidMessage = ":x: `!timer 180 [message]`";
+        private const string TimerNotFoundMessage = "Timer Not Found.";
 
         private readonly ITimeManager _timerManager;
         private readonly ILogger _logger;
@@ -56,6 +57,21 @@ namespace Dimer.Modules
                 _logger.LogDebug($"Send: {eventTime} {eventTime.Millisecond}");
                 await ReplyAsync($"{Context.User.Mention} {x}");
             });
+            timer.Finished += () => _timerManager.TryRemoveIfExists(timerId);
+        }
+
+        [Command("dimer-r")]
+        public async Task RemoveTimer([Summary("TimerId (number)")]int id)
+        {
+            if (!_timerManager.Exists(id))
+            {
+                await ReplyAsync(TimerNotFoundMessage);
+                return;
+            }
+            var timer = _timerManager.Find(id);
+            timer?.Cancel();
+            _timerManager.TryRemove(id);
+            await Context.Message.AddReactionAsync(new Emoji("👌"));
         }
     }
 }
