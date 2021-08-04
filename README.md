@@ -1,6 +1,6 @@
 [![DotNet Build](https://github.com/AntiquePendulum/Dimer/actions/workflows/debug-build.yml/badge.svg)](https://github.com/AntiquePendulum/Dimer/actions/workflows/debug-build.yml)
 
-# Dimer [WIP]
+# Dimer alpha-0.5
 > A Timer for Discord App.
 
 ![HowToUse](https://user-images.githubusercontent.com/39259186/128027793-8137f8c4-9733-4efe-a35e-89bdd9a8ae2d.gif)
@@ -25,13 +25,13 @@ Dimer supports the following writing styles
 
 >When the time you set comes, Dimer will send you a notification with [message]!
 
-### Remove Timer [WIP]
+### Remove Timer
 
 ```
 !dimer-r [timerId]
 ```
 
-### Edit Message [WIP]
+### Edit Message
 
 ```
 !dimer-e [timerId] [message]
@@ -41,7 +41,7 @@ Change notification message when send by Dimer
 
 Notice: You Can't Change [time]
 
-### Help! [WIP]
+### Help!
 
 ```
 !help
@@ -54,3 +54,10 @@ Notice: You Can't Change [time]
 
 ## License
 Under the MIT.
+
+## Libraries
+ConsoleAppFramework Copyright (c) 2020 Cysharp, Inc.  
+[LICENSE](https://github.com/Cysharp/ConsoleAppFramework/blob/master/LICENSE)
+
+Discord.Net Copyright (c) 2015-2019 Discord.Net Contributors  
+[LICENSE](https://github.com/discord-net/Discord.Net/blob/dev/LICENSE)  
