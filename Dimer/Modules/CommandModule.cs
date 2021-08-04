@@ -18,6 +18,7 @@ namespace Dimer.Modules
 
         private readonly Emoji _timerEmoji = new ("⏲️");
         private readonly Emoji _okHandEmoji = new("👌");
+        private readonly Color _deepSkyBlue = new (0, 0xbf, 0xff);
 
         private readonly ITimeManager _timerManager;
         private readonly ILogger _logger;
@@ -54,7 +55,7 @@ namespace Dimer.Modules
             var timerId = _timerManager.Add(timer);
             var now = DateTime.UtcNow;
             _logger.LogDebug($"Receipt: {now} {now.Millisecond}");
-            await ReplyAsync($"{_timerEmoji} {timerId}");
+            await ReplyAsync($"{_timerEmoji} Id=`{timerId}`");
             timer.Start(async x =>
             {
                 var eventTime = DateTime.UtcNow;
@@ -93,6 +94,26 @@ namespace Dimer.Modules
             }
             timer.Message = messages.Aggregate((a,b) => $"{a} {b}");
             await Context.Message.AddReactionAsync(_okHandEmoji);
+        }
+
+        [Command("dimer-h")]
+        [Alias("help")]
+        public async Task Help()
+        {
+            var eb = new EmbedBuilder
+            {
+                Color = _deepSkyBlue,
+                Title = "Command List"
+            };
+            eb.AddField("Add", "```!dimer [time]```");
+            eb.AddField("Edit", "```!dimer-e [timerId] [message]```");
+            eb.AddField("Remove", "```!dimer-r [timerId]```");
+            eb.AddField("Source Code", "[Dimer GitHub](https://github.com/AntiquePendulum/Dimer)");
+            eb.Footer = new EmbedFooterBuilder()
+                .WithIconUrl(
+                    "https://raw.githubusercontent.com/AntiquePendulum/AntiquePendulum/master/Images/AntiqueR-simple_small.png")
+                .WithText("Developed by AntiqueR");
+            await ReplyAsync(embed: eb.Build());
         }
     }
 }
