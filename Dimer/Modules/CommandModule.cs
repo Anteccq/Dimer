@@ -14,6 +14,10 @@ namespace Dimer.Modules
     {
         private const string TimerInvalidMessage = ":x: `!timer 180 [message]`";
         private const string TimerNotFoundMessage = "Timer Not Found.";
+        private const string NeedContextMessage = "Need Message Context";
+
+        private readonly Emoji _timerEmoji = new ("⏲️");
+        private readonly Emoji _okHandEmoji = new("👌");
 
         private readonly ITimeManager _timerManager;
         private readonly ILogger _logger;
@@ -50,7 +54,7 @@ namespace Dimer.Modules
             var timerId = _timerManager.Add(timer);
             var now = DateTime.UtcNow;
             _logger.LogDebug($"Receipt: {now} {now.Millisecond}");
-            await ReplyAsync($"{new Emoji("⏲️")} {timerId}");
+            await ReplyAsync($"{_timerEmoji} {timerId}");
             timer.Start(async x =>
             {
                 var eventTime = DateTime.UtcNow;
@@ -71,7 +75,24 @@ namespace Dimer.Modules
             var timer = _timerManager.Find(id);
             timer?.Cancel();
             _timerManager.TryRemove(id);
-            await Context.Message.AddReactionAsync(new Emoji("👌"));
+            await Context.Message.AddReactionAsync(_okHandEmoji);
+        }
+
+        [Command("dimer-e")]
+        public async Task EditTimer(int id, params string[] messages)
+        {
+            if (messages.Length == 0)
+            {
+                await ReplyAsync(NeedContextMessage);
+            }
+            var timer = _timerManager.Find(id);
+            if (timer is null)
+            {
+                await ReplyAsync(TimerNotFoundMessage);
+                return;
+            }
+            timer.Message = messages.Aggregate((a,b) => $"{a} {b}");
+            await Context.Message.AddReactionAsync(_okHandEmoji);
         }
     }
 }
